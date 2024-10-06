@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragment/lib.html :: lib}">
+    <script src="/js/cart.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <div th:replace="~{fragment/header.html :: header}"></div>
+    <!-- Close Header -->
+
+    <!-- Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/san-pham/search}" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="search" name="q" placeholder="Search ...">
+                    <div id="suggestions" class="autocomplete-suggestions list-group"></div>
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Start Content Page -->
+    <div class="container-fluid bg-light py-5">
+        <div class="col-md-6 m-auto text-center">
+            <h2 class="head-title mb-4 text-danger">Liên hệ chúng tôi</h2>
+        </div>
+    </div>
+
+
+
+    <!-- Start Contact -->
+    <div class="container py-5">
+        <div class="row py-5">
+            <form class="col-md-9 m-auto" method="post" role="form">
+                <div class="row">
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="name">Tên</label>
+                        <input type="text" class="form-control mt-1" id="name" name="name" placeholder="Tên">
+                    </div>
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="subject">Tiêu đề</label>
+                    <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Tiêu đề">
+                </div>
+                <div class="mb-3">
+                    <label for="message">Tin nhắn</label>
+                    <textarea class="form-control mt-1" id="message" name="message" placeholder="Tin nhắn" rows="8"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col text-end mt-2">
+                        <button type="submit" class="btn btn-success btn-lg px-3">Gửi</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <section class="custom-faqlist customer-exp text-center orangeshade">
+    <div class="container-fluid py-5">
+        <div class =row>
+            <h3 class="sub-title">Địa chỉ của chúng tôi</h3>
+        </div>
+        <div class="col-md-12 m-auto">
+            <div class="map-responsive">
+                <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.515695486143!2d106.785373!3d10.855042699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527c3debb5aad%3A0x5fb58956eb4194d0!2s%C4%90%E1%BA%A1i%20H%E1%BB%8Dc%20Hutech%20Khu%20E!5e0!3m2!1sen!2s!4v1626003753985!5m2!1sen!2s"
+                        width="600"
+                        height="450"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+    </section>
+    <!-- Ena Map -->
+    <!-- Start Footer -->
+    <div th:replace="~{fragment/footer.html :: footer}"></div>
+    <!-- End Footer -->
+</body>
+
+</html>
