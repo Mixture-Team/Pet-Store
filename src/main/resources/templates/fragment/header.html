@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <style>-->
+<!--        .navbar-brand img.logo {-->
+<!--            height: 40px; /* Điều chỉnh chiều cao phù hợp */-->
+<!--            width: auto; /* Giữ tỷ lệ khung hình */-->
+<!--            object-fit: contain; /* Đảm bảo logo vừa khít trong khu vực được chỉ định */-->
+<!--            margin-right: 10px; /* Tạo khoảng cách giữa logo và các phần tử khác */-->
+<!--        }-->
+<!--        .navbar-brand:hover img.logo {-->
+<!--            opacity: 0.8; /* Làm mờ logo khi di chuột qua */-->
+<!--            transition: opacity 0.3s ease; /* Tạo hiệu ứng mượt mà */-->
+<!--        }-->
+<!--        .navbar-brand img.logo {-->
+<!--            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));-->
+<!--        }-->
+<!--        .navbar {-->
+<!--            background-color: #ffffff; /* hoặc màu khác phù hợp với thiết kế của bạn */-->
+<!--        }-->
+<!--    </style>-->
+</head>
+<body>
+<th:fragment th:fragment="header">
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <!-- Thay đổi từ chữ sang hình ảnh -->
+            <a class="navbar-brand align-self-center" href="/trang-chu">
+                <img src="/img/Logo.png" alt="Logo" class="logo"  style="transform: scale(3.5); height: 50px">
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--bat dau-->
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/trang-chu">Trang chủ</a>
+                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="/gioi-thieu">Giới thiệu</a>-->
+<!--                        </li>-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/san-pham">Cửa hàng</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dich-vu">Dịch vụ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lien-he">Liên hệ</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <!--search-->
+
+                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ..." autocomplete="off" >
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-light mr-2"></i>
+
+                    </a>
+
+
+                    <!-- Hiển thị khi đã đăng nhập -->
+
+                    <a class="nav-icon position-relative text-decoration-none" href="/cart">
+                        <i class="fa fa-fw fa-cart-arrow-down text-light mr-1"></i>
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-dark text-light" id="cart-count">0</span>
+                    </a>
+                    <!-- Hiển thị thông tin người dùng khi đã đăng nhập -->
+                    <div sec:authorize="isAuthenticated()" class="dropdown">
+                        <button class="btn-dropdown">
+                            <i onclick="myFunction()" class="fa fa-fw fa-user text-light mr-3 dropbtn"></i>
+                            <div id="myDropdown" class="dropdown-content">
+                                <a href="/user/profile">Thông tin cá nhân</a>
+                                <a href="/auth/logout">Đăng xuất</a>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- Hiển thị khi chưa đăng nhập -->
+                    <a th:unless="${#authorization.expression('isAuthenticated()')}" href="/auth/login" class="btn btn-outline-light ms-2">
+                        Đăng nhập
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Close Header -->
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        $(document).ready(function() {
+            $('#search').on('input', function() {
+                let query = $(this).val();
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '/san-pham/Suggestions',
+                        type: 'GET',
+                        data: { query: query },
+                        success: function(data) {
+                            $('#suggestions').empty();
+                            data.forEach(function(product) {
+                                $('#suggestions').append('<div class="suggestion-item">' + product.name + '</div>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#suggestions').empty();
+                }
+            });
+
+            // Handle suggestion click
+            $(document).on('click', '.suggestion-item', function() {
+                let selectedProduct = $(this).text();
+                $('#search').val(selectedProduct);
+                $('#suggestions').empty();
+                window.location.href = '/san-pham/search?q=' + encodeURIComponent(selectedProduct);
+            });
+        });
+
+    </script>
+</th:fragment>
+</body>
+</html>
